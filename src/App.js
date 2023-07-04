@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import { SyncLoader } from "react-spinners";
 import axios from 'axios';
 import './App.css';
@@ -14,9 +14,10 @@ function App() {
     const [videoUploaded, setVideoUploaded] = useState(false);
     const [videoIsUploading, setVideoIsUploading] = useState(false);
     const [videoIsDetecting, setVideoIsDetecting] = useState(false);
-    const [videoLoading, setVideoLoading] = useState(false);
     const [detectFinished, setDetectFinished] = useState(false);
-    const baseUrl = "http://192.168.1.5:5000";
+
+    // const baseUrl = "http://192.168.1.5:5000";
+    const baseUrl = "https://fast-environs-391810.lm.r.appspot.com"
 
     function handleFileSelect(event) {
         const selectedFile = event.target.files[0];
@@ -74,7 +75,6 @@ function App() {
     }
 
     function handleDetectClick() {
-        setVideoLoading(true);
         setVideoIsDetecting(true)
         axios.get(`${baseUrl}/videos/detect/${filename}`, {
             responseType: 'blob'
@@ -89,16 +89,11 @@ function App() {
                 console.log(error);
             })
             .finally(() => {
-                setVideoLoading(false);
                 setVideoIsDetecting(false);
             });
     }
 
-    function handleLoadedData() {
-        setVideoLoading(false);
-    }
-
-    function handleDownloadClick() {  // new function
+    function handleDownloadClick() {
         const link = document.createElement('a');
         link.href = videoUrl;
         link.download = filename;
@@ -116,7 +111,7 @@ function App() {
                     <div className="file-drop">
                         {!videoUrl &&
                             (<>
-                            <img className='upload-image' src='/upload-image.png' alt='Upload image.'/>
+                            <img className='upload-image' src='/upload-image.png' alt='Upload file.'/>
                             <p>{dropText}</p>
                             <p>or</p>
                             </>)
@@ -128,7 +123,6 @@ function App() {
                                        width="100%"
                                        height="100%"
                                        controls
-                                       onLoadedData={handleLoadedData}
                                        onError={(e) => {
                                     console.error("Video error: ", e.target.error);
                                     console.log(videoUrl)

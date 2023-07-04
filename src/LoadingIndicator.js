@@ -5,7 +5,6 @@ import './LoadingIndicator.css';
 const LoadingIndicator = () => {
     const [dots, setDots] = useState(1);
     const [currentText, setCurrentText] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
 
     const initialLoadingTexts = [
         "Reading between the lines, and the pixels too",
@@ -28,7 +27,7 @@ const LoadingIndicator = () => {
         const timeout = setTimeout(() => {
             setCurrentText(almostDoneTexts);
             setDots(1);
-        }, 5000);  // Change this value to set the time before the text changes
+        }, 3000);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -38,8 +37,7 @@ const LoadingIndicator = () => {
         const timeout = setTimeout(() => {
             setCurrentText(finalText);
             setDots(1);
-        }, 10000);  // Change this value to set the time before the text changes
-
+        }, 3000);
         return () => clearTimeout(timeout);
     }, []);
 
@@ -47,7 +45,7 @@ const LoadingIndicator = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setDots(prevDots => prevDots === 3 ? 1 : prevDots + 1);
-        }, 2000); // Change this value to set the interval of dot changes
+        }, 2000);
 
         return () => clearInterval(interval);
     }, []);
